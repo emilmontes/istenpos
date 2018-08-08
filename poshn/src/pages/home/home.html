@@ -1,0 +1,200 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>POSHN</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div [ngSwitch]="home">
+    <!--MENU PRINCIPAL DE CATEGORIAS-->
+      <div *ngSwitchCase="'menuPrincipal'">
+        <div class="centrado"  *ngIf="subCat">
+          <h6 (click)="gotoUp()">
+            <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon> 
+            Subcategorias en {{nameCategoriaPadre}}
+          </h6>
+              
+        </div>
+        
+        <ion-slides style="height: 180px !important" pager>
+          <ion-slide *ngFor="let item of categories">
+                <div class="centrado"><img [src]="item.image"style="height: 60px !important; width: 60px" /></div>
+                <h5>{{item.name}}</h5>
+                <h6 *ngIf="!lastCategory" color="primary" (click)="gotoCategoria(item)"><ion-icon ios="ios-eye" md="md-eye"></ion-icon> Ver subcategorias</h6>
+          </ion-slide>            
+        </ion-slides>
+        <ion-grid>
+          <ion-row>
+            <ion-col col-sm-12 col-md-6 col-lg-6 col-xl-6>              
+              <ion-list *ngIf="childProductsExists" no-lines>
+                <ion-list-header class="borde_superior">
+                  Productos en {{nameCategoriaPadre}}
+                </ion-list-header>
+                <ion-item *ngFor="let item of products" (click)="addItemProduct(item)">
+                  <ion-avatar item-start>
+                    <img [src]="item.image">
+                  </ion-avatar>
+                  <h2>{{item.name}}</h2>
+                  <p>Precio: Lp. {{item.price}}</p>
+                </ion-item>
+                
+              </ion-list> 
+              
+            </ion-col>
+            <ion-col col-sm-12 col-md-6 col-lg-6 col-xl-6>
+              <ion-list>
+                <ion-list-header class="negrita borde_superior">
+                  Proforma actual
+                  <button ion-button outline item-end (click)="newPedido()" color="danger">Limpiar</button>
+                </ion-list-header>
+                <ion-item *ngIf="productosEnProforma">
+                  <ion-label color="primary" floating>Identificador</ion-label>
+                  <ion-input type="text" [(ngModel)]="identificadorProforma"></ion-input>
+                </ion-item>
+                <ion-item>
+                </ion-item>
+
+                <ion-item *ngFor="let item of itemsBill">
+                  <ion-icon name="{{item.icon}}" item-start color="{{item.iconColor}}"></ion-icon>
+                  
+                  <h2>{{item.nameProduct}}</h2>
+                  <p>Precio: Lp. {{item.price}}</p>
+                  <p>Cantidad:  {{item.quantity}}</p>
+                  <h2>Total: Lp. {{item.price*item.quantity}}</h2>
+                  <ion-icon ios="ios-add-circle" md="md-add-circle" item-end (click)="addItemProduct(item)" color="primary"></ion-icon>
+                  <ion-icon ios="ios-remove-circle" md="md-remove-circle" item-end (click)="removeItemProduct(item)" color="danger"></ion-icon>
+                </ion-item>
+              </ion-list>
+              
+              <ion-list>
+                <ion-item>
+                  <h2>Pago: Lp. {{totalProformaActual}}</h2>
+                  <p># de Productos: {{cantidadProductosProforma}}</p>
+                </ion-item>
+              </ion-list>
+
+              <ion-grid>
+                <ion-row>
+                  <ion-col col-sm-6 col-md-6 col-lg-6 col-xl-6 class="centrado" padding>
+                    <button ion-button full color="orange" (click)="generarProforma(true)">Pedido</button>
+                  </ion-col>
+                  <ion-col col-sm-6 col-md-6 col-lg-6 col-xl-6 class="centrado" padding>
+                    <button ion-button full color="orange" (click)="createFacturaDesdeMenu()">Pagar</button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+
+            </ion-col>
+          </ion-row>
+        </ion-grid> 
+      </div>
+    
+    <!--PROFORMAS-->
+      <div *ngSwitchCase="'proformas'">
+        <ion-grid>
+          <ion-row>
+            <ion-col col-sm-6 col-md-6 col-lg-6 col-xl-6>
+                <ion-list>
+                  <ion-list-header class="negrita borde_superior">
+                    Proformas
+                    <ion-icon ios="ios-refresh" md="md-refresh" item-end color="orange" (click)="getProformas()"></ion-icon>
+                  </ion-list-header>
+                  <ion-item-sliding *ngFor="let item of proformas">
+                    <ion-item>
+                      <h2>Identificador: <b>{{item.identificador}}</b></h2>
+                      <h2>Creada: {{item.fecha}}</h2>
+                      <p>Items: {{item.cantidadProductos}}</p>
+                      <p>Cantidad: Lp. {{item.totalFacturado}}</p>
+                      <ion-icon name="arrow-forward" item-end (click)="cargarProforma(item)"></ion-icon>
+                    </ion-item>
+                    <ion-item-options side="right">
+                      <button ion-button color="danger" (click)="deleteProforma(item)">
+                        <ion-icon name="md-trash"></ion-icon>
+                      </button>
+                    </ion-item-options>
+                  </ion-item-sliding>
+                </ion-list>  
+
+            </ion-col>
+            <ion-col col-sm-6 col-md-6 col-lg-6 col-xl-6>
+                <ion-list>
+                  <ion-list-header class="negrita borde_superior">
+                    Proforma actual
+                    <p *ngIf="caiProformaCargada">Cai: {{caiProformaCargada}}</p>
+                    <p *ngIf="caiProformaCargada">Identificador: {{identificadorProformaCargada}}</p>
+                  </ion-list-header>
+  
+                  <ion-item *ngFor="let item of itemsProforma">
+                    <ion-icon name="{{item.icon}}" item-start color="{{item.iconColor}}"></ion-icon>
+                    
+                    <h2>{{item.nameProduct}}</h2>
+                    <p>Precio: Lp. {{item.price}}</p>
+                    <p>Cantidad:  {{item.quantity}}</p>
+                    <h2>Total: Lp. {{item.price*item.quantity}}</h2>
+                  </ion-item>
+                </ion-list>
+                
+                <ion-list>
+                  <ion-item>
+                    <h2>Pago: Lp. {{totalProformaCargada}}</h2>
+                    <p># de Productos: {{cantidadProductosProformaCargada}}</p>
+                  </ion-item>
+                </ion-list>
+
+                <ion-grid>
+                  <ion-row>
+                    <ion-col col-sm-6 col-md-6 col-lg-6 col-xl-6 class="centrado" padding>
+                      <button ion-button full color="orange" (click)="cargarEnMenu()">Cargar en menu</button>
+                    </ion-col>
+                    <ion-col col-sm-6 col-md-6 col-lg-6 col-xl-6 class="centrado" padding>
+                      <button ion-button full color="orange" (click)="generarFacturaDesdeProformas()">Generar factura</button>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <div *ngSwitchCase="'clientes'">
+        <ion-list>
+          <ion-list-header class="borde_superior">
+            Clientes
+            <ion-icon ios="ios-refresh" md="md-refresh" item-end color="orange" (click)="getCustomers()"></ion-icon>
+            <ion-icon name="add-circle" item-end color="orange" (click)="addCustomer()"></ion-icon>
+          </ion-list-header>
+          <ion-item-sliding *ngFor="let item of customers">
+            <ion-item>
+              {{item.name + " " + item.lastName}}
+              <p>Codigo: {{item.code}}</p>
+            </ion-item>
+            <ion-item-options side="right">
+              <button ion-button icon-only color="primary" (click)="editName(item)">
+                <ion-icon ios="ios-create" md="md-create"></ion-icon>
+              </button>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+      </div>
+    </div>
+    
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="home">
+      <ion-segment-button value="menuPrincipal">
+        Menu
+      </ion-segment-button>
+      <ion-segment-button value="proformas" (click)="getProformas()">
+        Proformas
+      </ion-segment-button>
+      <ion-segment-button value="clientes" (click)="getCustomers()">
+        Clientes
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,56 @@
+<!--
+  Generated template for the AdminProductsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Administración de Productos</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label floating>Categorias</ion-label>
+      <ion-select [(ngModel)]="categorieId" (ngModelChange)="getItemsCategorie($event)" [selectOptions]="selectedOptionCategories">
+        <ion-option *ngFor="let item of categories" value="{{item.value}}">{{item.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <div class="centrado" padding>
+    <button ion-button color="orange" (click)="addProduct()">Agregar producto</button>
+  </div>
+
+  <ion-list *ngIf="childExists">
+    <ion-list-header class="borde_superior">
+      Productos en Categoria
+    </ion-list-header>
+
+    <ion-item-sliding *ngFor="let item of productsCategory">
+      <ion-item (click)="gotoCategoria(item)">
+        <ion-avatar item-start>
+          <img src="">
+        </ion-avatar>
+        <h2>{{ item.name }}</h2>
+        <p>Lp. {{ item.price }}</p>
+      </ion-item>
+      <ion-item-options side="right">
+        <button ion-button icon-only color="danger" (click)="confirmDelete(item)">
+          <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
+        </button>
+        <button ion-button icon-only color="secondary" (click)="editName(item)">
+          <ion-icon ios="ios-create" md="md-create"></ion-icon>
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>  
+</ion-content>

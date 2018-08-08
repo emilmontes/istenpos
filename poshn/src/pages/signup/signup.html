@@ -1,0 +1,55 @@
+<!--
+  Generated template for the SignupPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Registro</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <ion-list>
+      <ion-item>
+        <ion-label floating color="orange">Coorporación(opcional)</ion-label>
+        <ion-select [(ngModel)]="coorpId" [selectOptions]="selectedOptionCoorp">
+          <ion-option *ngFor="let item of coorporaciones" selected="{{item.select}}" value="{{item.id}}">{{item.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ion-item>
+      <ion-label floating color="orange"><ion-icon ios="ios-person" md="md-person"></ion-icon> Nombre</ion-label>
+      <ion-input [(ngModel)]="name" type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating color="orange"><ion-icon ios="ios-person" md="md-person"></ion-icon> Apellido</ion-label>
+      <ion-input [(ngModel)]="lastName" type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating color="orange"><ion-icon ios="ios-mail" md="md-mail"></ion-icon> Email</ion-label>
+      <ion-input [(ngModel)]="email" type="text"></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label floating color="orange"><ion-icon ios="ios-mail" md="md-mail"></ion-icon> Código</ion-label>
+      <ion-input [(ngModel)]="code" type="number"></ion-input>
+    </ion-item>
+
+    <ion-item>
+    </ion-item>
+  
+  </ion-list>
+
+  <div class="centrado">
+    <button ion-button color="orange" (click)="createCustomer()">{{typeRegister}}</button>
+  </div>
+</ion-content>

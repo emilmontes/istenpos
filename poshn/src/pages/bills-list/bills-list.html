@@ -1,0 +1,82 @@
+<!--
+  Generated template for the BillsListPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>Facturas</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-sm-6 col-md-6 col-lg-6 col-xl-6>
+
+          <ion-list>
+            <ion-list-header class="borde_superior">
+              Facturas
+              <ion-icon ios="ios-refresh" md="md-refresh" item-end color="orange" (click)="getFacturas()"></ion-icon>
+            </ion-list-header>
+            <ion-item *ngFor="let item of facturas">
+              <h2>Identificador: <b>{{item.identificador}}</b></h2>
+              <h2>Creada: {{item.fecha}}</h2>
+              <p>Items: {{item.cantidadProductos}}</p>
+              <p>Cantidad: Lp. {{item.totalFacturado}}</p>
+              <ion-icon name="arrow-forward" item-end (click)="cargarFactura(item)"></ion-icon>
+            </ion-item>
+          </ion-list>  
+
+      </ion-col>
+      <ion-col *ngIf="facturaCargada" col-sm-6 col-md-6 col-lg-6 col-xl-6>
+          <ion-list>
+            <ion-list-header class="negrita borde_superior">
+              Factura actual
+              <p *ngIf="caiFactura">Cai: {{caiFactura}}</p>
+            </ion-list-header>
+            <ion-item>
+              <ion-label floating color="orange"><ion-icon name="person"></ion-icon> Cliente adjunto</ion-label>
+              <ion-select [(ngModel)]="clienteAdjunto" (ngModelChange)="confirmarDatosCliente($event)" cancelText="Cancelar" okText="Adjuntar" >
+                <ion-option *ngFor="let item of customers" value="{{item.id}}" selected="{{item.select}}">{{item.name + " " + item.lastName}}</ion-option>
+              </ion-select>
+            </ion-item>
+
+            <ion-item>
+              <ion-label floating color="orange"><ion-icon name="person"></ion-icon> Tipo de pago</ion-label>
+              <ion-select [(ngModel)]="typeCobro" cancelText="Cancelar" okText="Aceptar" >
+                <ion-option *ngFor="let item of cobros" value="{{item.id}}">{{item.name + " - " + item.nombreTipoPago}}</ion-option>
+              </ion-select>
+            </ion-item>
+
+            <ion-item *ngFor="let item of itemsFactura">
+              <ion-icon name="{{item.icon}}" item-start color="{{item.iconColor}}"></ion-icon>
+              
+              <h2>{{item.nameProduct}}</h2>
+              <p>Precio: Lp. {{item.price}}</p>
+              <p>Cantidad:  {{item.quantity}}</p>
+              <h2>Total: Lp. {{item.price*item.quantity}}</h2>
+            </ion-item>
+          </ion-list>
+          
+          <ion-list>
+            <ion-item>
+              <h2>Pago: Lp. {{totalFactura}}</h2>
+              <p># de Productos: {{cantidadProductosFactura}}</p>
+            </ion-item>
+          </ion-list>
+
+          <div class="centrado">
+            <button ion-button color="orange" (click)="pagarFactura()">Pagar</button>
+          </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

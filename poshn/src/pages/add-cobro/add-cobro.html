@@ -1,0 +1,46 @@
+<!--
+  Generated template for the AddCobroPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Metodo de Papo</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list radio-group [(ngModel)]="typeCobro" class="borde_inferior borde_superior">
+
+    <ion-list-header>
+      Tipo de pago
+    </ion-list-header>
+  
+    <ion-item>
+      <ion-label>De contado</ion-label>
+      <ion-radio value="1"></ion-radio>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label>A cuenta</ion-label>
+      <ion-radio value="2"></ion-radio>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-item>
+      <ion-label color="orange" floating>Nombre</ion-label>
+      <ion-input type="text" [(ngModel)]="nameCobro"></ion-input>
+    </ion-item>
+    <ion-item>
+    </ion-item>
+  </ion-list>
+
+  <div class="centrado">
+    <button ion-button color="orange" (click)="saveCobro()">Guardar</button>
+  </div>
+</ion-content>

@@ -1,0 +1,7 @@
+{
+  "name": "poshn",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

@@ -1,0 +1,44 @@
+<!--
+  Generated template for the AdminUsersPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-toolbar>
+      <button ion-button menuToggle *ngIf="!subCat">
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>Clientes</ion-title>
+      <ion-buttons end>
+        <button ion-button icon-only color="royal" (click)="addCustomer()">
+          <ion-icon ios="ios-person-add" md="md-person-add"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <ion-list>
+      <ion-list-header class="borde_superior">
+        Clientes
+      </ion-list-header>
+      <ion-item-sliding *ngFor="let item of customers">
+        <ion-item>
+          {{item.name + " " + item.lastName}}
+          <p>Codigo: {{item.code}}</p>
+        </ion-item>
+        <ion-item-options side="right">
+          <button ion-button icon-only color="danger" (click)="confirmDeleteCustomer(item)">
+            <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
+          </button>
+          <button ion-button icon-only color="dancer" (click)="editName(item)">
+            <ion-icon ios="ios-create" md="md-create"></ion-icon>
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+</ion-content>
